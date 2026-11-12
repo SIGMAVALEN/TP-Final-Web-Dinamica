@@ -1,0 +1,90 @@
+### Pruebas de la API — Bajos & Graves (extensión REST Client de VS Code)
+### Antes de empezar: php artisan migrate:fresh --seed
+### Arriba de cada petición aparece "Send Request": hacé clic ahí. Ejecutalas en orden.
+
+@base = http://127.0.0.1:8000/api
+
+### 1) Listar todos → 200
+GET {{base}}/bajos
+Accept: application/json
+
+### 2) Ver uno que existe → 200
+GET {{base}}/bajos/1
+Accept: application/json
+
+### 3) Ver uno que NO existe → 404
+GET {{base}}/bajos/999
+Accept: application/json
+
+### 4) Crear uno válido → 201
+POST {{base}}/bajos
+Accept: application/json
+Content-Type: application/json
+
+{
+  "marca": "Squier",
+  "modelo": "Classic Vibe 70s Jazz",
+  "cuerdas": 4,
+  "precio": 499,
+  "stock": 2,
+  "fretless": false,
+  "fecha_ingreso": "2026-11-01"
+}
+
+### 5) Crear vacío → 422
+POST {{base}}/bajos
+Accept: application/json
+Content-Type: application/json
+
+{}
+
+### 6) Crear con datos inválidos → 422
+POST {{base}}/bajos
+Accept: application/json
+Content-Type: application/json
+
+{
+  "marca": "X",
+  "modelo": "Y",
+  "cuerdas": 7,
+  "precio": -5,
+  "stock": 1,
+  "fretless": "no",
+  "fecha_ingreso": "2030-01-01"
+}
+
+### 7) Actualizar el 9 → 200
+PUT {{base}}/bajos/9
+Accept: application/json
+Content-Type: application/json
+
+{
+  "precio": 459.99,
+  "stock": 5
+}
+
+### 8) Actualizar con precio inválido → 422
+PUT {{base}}/bajos/9
+Accept: application/json
+Content-Type: application/json
+
+{
+  "precio": "barato"
+}
+
+### 9) Actualizar uno que NO existe → 404
+PUT {{base}}/bajos/999
+Accept: application/json
+Content-Type: application/json
+
+{
+  "precio": 1
+}
+
+### 10) Borrar el 9 → 200
+DELETE {{base}}/bajos/9
+Accept: application/json
+
+### 11) Borrar el 9 otra vez → 404
+DELETE {{base}}/bajos/9
+Accept: application/json

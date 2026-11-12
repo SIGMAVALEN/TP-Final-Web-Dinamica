@@ -1,0 +1,13 @@
+# Dependencias y builds
+node_modules/
+vendor/
+.next/
+
+# Credenciales y configuración local
+.env
+.env.local
+.env.*.local
+
+# Base de datos local
+*.sqlite
+*.sqlite-journal
